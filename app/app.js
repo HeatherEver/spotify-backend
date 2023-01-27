@@ -18,7 +18,7 @@ app.get("/", (req, res, next) => {
 
 app.get("/login", (req, res, next) => {
   const scopes =
-    "user-top-read user-read-email user-read-private user-library-read"
+    "user-top-read user-read-email user-read-private user-library-read user-modify-playback-state"
   const clientId = process.env.CLIENT_ID
   const queryObj = {
     response_type: "code",
@@ -55,7 +55,11 @@ app.get("/exchange", (req, res, next) => {
     )
     .then(({ data }) => {
       process.env.ACCESS_TOKEN = data.access_token
-      res.status(200).send({ access_token: data.access_token })
+      console.log(data.access_token)
+      res.status(200).send({
+        access_token: data.access_token,
+        device_id: process.env.DEVICE_ID,
+      })
     })
     .catch((err) => {
       console.log(err, "<-- error")
